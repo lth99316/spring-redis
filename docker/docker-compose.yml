@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  redis:
+    image: bitnami/redis:7.4.2
+    container_name: redis
+    restart: unless-stopped
+    environment:
+      - REDIS_PASSWORD=123456
+    ports:
+      - "6379:6379"
+    volumes:
+      - 'redis-data:/bitnami/redis/data'
+    networks:
+      - spring-redis-network
+
+  postgresql:
+    image: postgres:13.1
+    container_name: postgresql
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=spring-redis
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres13:/data/postgres13
+    networks:
+      - spring-redis-network
+
+networks:
+  spring-redis-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+  postgres13:
+
