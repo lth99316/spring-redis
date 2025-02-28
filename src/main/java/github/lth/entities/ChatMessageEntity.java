@@ -1,7 +1,7 @@
 package github.lth.entities;
 
 
-import github.lth.enums.MessageType;
+import github.lth.enums.ChatMessageType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageEntity {
+public class ChatMessageEntity {
 
     @Id
     @Column(value = "id")
@@ -33,7 +33,7 @@ public class MessageEntity {
     private String content;
 
     @Column(value = "type")
-    private MessageType type;
+    private ChatMessageType type;
 
 //    @Column(value = "status")
 

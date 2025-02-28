@@ -1,6 +1,6 @@
 package github.lth.enums;
 
-public enum MessageType {
+public enum ChatMessageType {
 
     CHAT, JOIN, OUT
 }

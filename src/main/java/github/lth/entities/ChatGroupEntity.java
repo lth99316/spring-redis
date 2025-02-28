@@ -1,7 +1,7 @@
 package github.lth.entities;
 
 
-import github.lth.enums.GroupStatus;
+import github.lth.enums.ChatGroupStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GroupEntity {
+public class ChatGroupEntity {
 
     @Id
     @Column(value = "id")
@@ -27,7 +27,7 @@ public class GroupEntity {
     private String title;
 
     @Column(value = "status")
-    private GroupStatus status;
+    private ChatGroupStatus status;
 
     @Column(value = "is_single")
     private Boolean isSingle;

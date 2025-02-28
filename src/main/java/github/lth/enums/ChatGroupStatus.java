@@ -1,6 +1,6 @@
 package github.lth.enums;
 
-public enum GroupStatus {
+public enum ChatGroupStatus {
 
     ACTIVE, DELETE
 }

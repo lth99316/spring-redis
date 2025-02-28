@@ -9,6 +9,8 @@ spring:
     url: r2dbc:postgresql://localhost:5432/spring-redis
     username: user
     password: 123456
+  flyway:
+    enable: true
 
   data.redis:
     host: localhost
