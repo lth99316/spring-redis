@@ -17,3 +17,11 @@ spring:
     port: 6379
     password: 123456
 
+app:
+  security:
+    token-configs:
+      - type: ACCESS_TOKEN
+        duration: 1M
+      - type: REFRESH_TOKEN
+        duration: 3M
+
