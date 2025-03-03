@@ -1,6 +1,11 @@
 server:
   port: 8080
 
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web.reactive: DEBUG
+
 spring:
   application:
     name: spring-redis
@@ -21,7 +26,13 @@ app:
   security:
     token-configs:
       - type: ACCESS_TOKEN
-        duration: 1M
+        duration: P30d
       - type: REFRESH_TOKEN
-        duration: 3M
+        duration: P90d
+    skip-api:
+      - /public/**
+      - /ui/login
+    public-key: "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+aELE6InoIIRtqEuiDaFKfNpFYwwk0R+S1tmAt4wi0PNwHo2+kOsvh2xWVdZm0xqpQ6/8Qbeu1kV1qwhRzxdtw=="
+    private-key: "MEECAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQcEJzAlAgEBBCBy63470Fb64RVuHZy1arFwmN+ARFkWW/A17NQWToHlKw=="
+
 

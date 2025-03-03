@@ -54,6 +54,11 @@ public class ECDSAUtils {
 
             var privateKey = Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded());
             var publicKey = Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded());
+
+
+            var ecPublicKey = getPublicKey(publicKey);
+            var ecPrivateKey = getPrivateKey(privateKey);
+
             System.out.println("Private Key: " + privateKey);
             System.out.println("Public Key: " + publicKey);
 

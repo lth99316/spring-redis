@@ -2,10 +2,8 @@ package github.lth.config;
 
 
 import github.lth.enums.TokenType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,19 +16,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
-@PropertySource(value = "${app.security}")
+@ConfigurationProperties(prefix = "app.security")
 public class SecurityConfigProperties {
 
     private List<TokenConfig> tokenConfigs;
+
+    private List<String> skipApi;
 
     private String publicKey;
     private String privateKey;
 
     @Getter
-    @AllArgsConstructor
+    @Setter
     @NoArgsConstructor
     public static class TokenConfig {
-        private TokenType name;
+        private TokenType type;
         private Duration duration;
     }
 }

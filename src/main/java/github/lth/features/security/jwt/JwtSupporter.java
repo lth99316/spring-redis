@@ -3,6 +3,7 @@ package github.lth.features.security.jwt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import github.lth.config.ReactiveWebsocketConfig;
 import github.lth.config.SecurityConfigProperties;
 import github.lth.dtos.security.TokenClaim;
 import github.lth.enums.TokenType;
@@ -43,9 +44,9 @@ public class JwtSupporter {
     @PostConstruct
     public void init() {
         tokenMap = securityConfigProperties.getTokenConfigs().stream()
-                .collect(Collectors.toMap(k -> k.getName(), v -> v.getDuration()));
+                .collect(Collectors.toMap(k -> k.getType(), v -> v.getDuration()));
 
-        this.keypair[PRIVATE_KEY] = ECDSAUtils.getPublicKey(securityConfigProperties.getPrivateKey());
+        this.keypair[PRIVATE_KEY] = ECDSAUtils.getPrivateKey(securityConfigProperties.getPrivateKey());
         this.keypair[PUBLIC_KEY] = ECDSAUtils.getPublicKey(securityConfigProperties.getPublicKey());
     }
 
@@ -82,6 +83,16 @@ public class JwtSupporter {
     }
 
     public String extractToken(ServerWebExchange exchange) {
+        if (exchange.getRequest().getURI().getPath().equals(ReactiveWebsocketConfig.WEBSOCKET_PATH)) {
+
+            var tokenParam = exchange.getRequest().getQueryParams().get(HttpHeaders.AUTHORIZATION);
+           if (tokenParam == null || tokenParam.isEmpty()) {
+               throw new ForbiddenException("Token is missing");
+           }
+
+           return tokenParam.getFirst();
+        }
+
         var headerToken = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
 
         if (headerToken == null || headerToken.isEmpty()) {

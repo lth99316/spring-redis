@@ -1,5 +1,6 @@
 package github.lth.features.security.jwt;
 
+import github.lth.config.SecurityConfigProperties;
 import github.lth.dtos.security.TokenClaim;
 import github.lth.features.security.user.JwtUserDetail;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,14 @@ import java.io.IOException;
 public class JwtFilter implements WebFilter {
 
     private final JwtSupporter jwtSupporter;
+    private final SecurityConfigProperties securityConfigProperties;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 
-        // Todo: handle public and anonymous
+        if (shouldNotFilter(exchange)) {
+            return chain.filter(exchange);
+        }
 
         var tokenClaim = jwtSupporter.verify(jwtSupporter.extractToken(exchange));
         setAuthentication(tokenClaim);
@@ -35,6 +39,13 @@ public class JwtFilter implements WebFilter {
         var authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
 
         ReactiveSecurityContextHolder.withAuthentication(authentication);
+    }
+
+    public boolean shouldNotFilter(ServerWebExchange exchange) {
+        var path = exchange.getRequest().getURI().getPath();
+        System.out.println(path);
+
+        return securityConfigProperties.getSkipApi().contains(path);
     }
 
 }
