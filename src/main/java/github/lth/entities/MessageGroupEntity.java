@@ -12,12 +12,12 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.UUID;
 
-@Table(name = "group")
+@Table(name = "message_group")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatGroupEntity {
+public class MessageGroupEntity {
 
     @Id
     @Column(value = "id")
@@ -29,6 +29,19 @@ public class ChatGroupEntity {
     @Column(value = "status")
     private ChatGroupStatus status;
 
+    @Column(value = "owner")
+    private UUID ownerId;
+
+    // Todo: refactor
+
     @Column(value = "is_single")
     private Boolean isSingle;
+
+    @Column(value = "code") // for group
+    private String code;
+
+    @Column(value = "targetId") // for single
+    private UUID targetId;
+
+
 }

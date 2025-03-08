@@ -1,14 +1,15 @@
 package github.lth.entities;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import github.lth.enums.UserRole;
+import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Table(name = "users")
@@ -16,7 +17,8 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
+@Builder
+public class UserEntity implements Persistable<UUID> {
 
     @Id
     @Column(value = "id")
@@ -31,4 +33,18 @@ public class UserEntity {
     @Column(value = "password")
     private String password;
 
+    @Column(value = "roles")
+    @Builder.Default
+    private Set<UserRole> roles = new HashSet<>();
+
+    @Override
+    public boolean isNew() {
+
+        if (this.id == null) {
+            this.id = UUID.randomUUID();
+            return true;
+        }
+
+        return false;
+    }
 }

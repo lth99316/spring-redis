@@ -19,7 +19,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
     implementation 'org.postgresql:r2dbc-postgresql'
-    implementation "org.flywaydb:flyway-core:11.3.4"
+
+    implementation 'org.flywaydb:flyway-database-postgresql:11.3.4'
+    implementation 'org.postgresql:postgresql'
 
 
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'

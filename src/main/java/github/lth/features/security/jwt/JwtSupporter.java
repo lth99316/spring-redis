@@ -55,8 +55,8 @@ public class JwtSupporter {
         var expiredAt = issuedAt.plus(Optional.of(tokenMap.get(tokenClaim.getTokenType()))
                 .orElseThrow(() -> new UnsupportedOperationException("Unsupported Token Type" + tokenClaim.getTokenType())));
 
-        Map<String, String> claimMap = objectMapper.convertValue(tokenClaim,
-                new TypeReference<Map<String, String>>() {
+        Map<String, Object> claimMap = objectMapper.convertValue(tokenClaim,
+                new TypeReference<Map<String, Object>>() {
                 });
         return Jwts.builder()
                 .id(UUID.randomUUID().toString())
@@ -99,6 +99,6 @@ public class JwtSupporter {
             throw new ForbiddenException("Token is missing");
         }
 
-        return headerToken.getFirst();
+        return headerToken.getFirst().replace("Bearer ", "");
     }
 }

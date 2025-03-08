@@ -17,7 +17,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatMessageEntity {
+public class MessageEntity {
 
     @Id
     @Column(value = "id")
@@ -27,7 +27,7 @@ public class ChatMessageEntity {
     private UUID sender;
 
     @Column(value = "room_id")
-    private UUID groupId;
+    private UUID room_id;
 
     @Column(value = "content")
     private String content;

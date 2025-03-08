@@ -15,7 +15,7 @@ services:
       - spring-redis-network
 
   postgresql:
-    image: postgres:13.1
+    image: postgres:17
     container_name: postgresql
     restart: unless-stopped
     environment:
@@ -37,3 +37,4 @@ volumes:
   redis-data:
   postgres13:
 
+# Todo: https://github.com/lth99316/keycloak-compose.git

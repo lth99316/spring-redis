@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Spring Chat</title>
+</head>
+<body>
+
+<div class="center">
+
+
+
+    <div id="user-selection-div">
+    </div>
+
+
+    <!-- select user after create chat or looad message in that group
+
+    // when have all value open button for send message
+
+    // button
+
+
+    // all message here, recive message from websokcet -->
+    <textarea name="message-area" id="message-area" name="message-area" readonly
+              rows="4" cols="10" placeholder="Welcome to chat room">
+        </textarea>
+
+
+    <form id="chat-message">
+        <label for="message">Messsage:</label>
+        <input type="text" id="message" name="message">
+
+        <br>
+        <br>
+
+        <input type="submit" value="Send message">
+    </form>
+
+</div>
+
+<script>
+    window.onload = () => {
+        var strToken = localStorage.getItem("token")
+        const tokenObj = JSON.parse(strToken)
+
+        if (tokenObj == null) {
+            // window.location.replace("http://" + document.location.host + "/ui/login")
+        } else {
+
+        }
+    }
+
+    function sendMessage() {
+
+        // open websokcet
+        connectWebsocket();
+
+        var message = document.getElementById("message")
+        conn.sendMessage(message.value)
+
+        // append message to textarea
+    }
+
+    function selectUser() {
+
+        // Todo: get value of option
+        let targetId = document.getElementById()
+
+        let response = getAllMessageByTargetId(targetId);
+
+        // Todo: map message to areatext
+
+    }
+
+    function fillUserSelection() {
+        const userSelection = document.getElementById("user-selection-div");
+
+        let strOptions;
+        for (const i = 0; i < resposne.length; i++) {
+            strOptions += "<option id="+ resposne[i].id +"> "+ resposne[i].displayName +" </option>"
+        }
+
+        userSelection.innerHTML = "<select>"+ strOptions + "</select>"
+    }
+
+    function getAllUser() {
+        const xhttpr = new XMLHttpRequest();
+        xhttpr.open('GET', "http://" + document.location.host + "/api/users", true);
+        xhttpr.setRequestHeader('Content-Type',  "application/json;charset=UTF-8");
+
+        xhttpr.onload = () => {
+            if (xhttpr.status == 200) {
+                return JSON.parse(xhttpr.response);
+            } else {
+                console.log("Error when call user api")
+            }
+        }
+    }
+
+    function getAllMessageByTargetId(targetId) {
+        const xhttpr = new XMLHttpRequest();
+        xhttpr.open('GET', "http://" + document.location.host + "/api/chat/message/" + targetId, true);
+        xhttpr.setRequestHeader('Content-Type',  "application/json;charset=UTF-8");
+
+        xhttpr.onload = () => {
+            if (xhttpr.status == 200) {
+                return JSON.parse(xhttpr.response);
+            } else {
+                console.log("Error when call user api")
+            }
+        }
+    }
+
+    function connectWebsocket() {
+        if (window["WebSocket"]) {
+            console.log("Support Websocket")
+
+            //connect ws
+            var conn = new WebSocket("ws://" + document.location.host + "/ws")
+        } else {
+            alert("Browser not support websocket")
+        }
+    }
+
+</script>
+
+<style type="css" >
+    body {
+        width: 100%;
+        height: 100%;
+    }
+
+    .center {
+
+    }
+</style>
+
+</body>
+</html>

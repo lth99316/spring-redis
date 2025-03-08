@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Spring Chat</title>
+
+    <!--    <link rel="stylesheet" href="style.css">-->
+    <!--    <script src="./script.js"></script>-->
+</head>
+<body>
+
+<div class="center">
+
+    <h1>Login</h1>
+
+    <form>
+        <label for="username">User Name: </label>
+        <input type="text" id="username" name="username">
+
+        <label for="username">Password: </label>
+        <input type="password" id="password" name="password">
+
+        <br>
+        <br>
+
+        <input type="button" value="login" onclick="login()">
+    </form>
+
+    <script>
+
+        function login() {
+
+            let username = document.getElementById("username");
+            let password = document.getElementById("password");
+
+            if (username != null || password != null) {
+                const xhttpr = new XMLHttpRequest();
+                xhttpr.open('POST', "http://" + document.location.host + "/api/login", true);
+                xhttpr.setRequestHeader('Content-Type',  "application/json;charset=UTF-8");
+
+                const loginRequest = { username: username.value, password: password.value };
+                xhttpr.send(JSON.stringify(loginRequest));
+                xhttpr.onload = ()=> {
+
+                    const jsonResponse = xhttpr.response;
+                    const response = JSON.parse(jsonResponse);
+
+                    if (xhttpr.status === 200) {
+                        // Todo: refactor
+                        localStorage.setItem("token", JSON.stringify(response))
+
+                        // xhttpr.open('POST', "http://" + document.location.host + "/ui/home", true);
+                        // xhttpr.setRequestHeader('Content-Type',  "application/json;charset=UTF-8");
+                        // xhttpr.setRequestHeader('Authorization', 'Bearer ' + response.accessToken );
+                        // xhttpr.send()
+
+                        window.location.replace("http://" + document.location.host + "/ui/home" )
+                    } else {
+                        // Handle error
+                        alert(response.message)
+                    }
+                };
+            } else {
+                alert("Missing username or password")
+            }
+
+        }
+    </script>
+</div>
+
+</body>
+</html>
