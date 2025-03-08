@@ -9,32 +9,45 @@
 
 
 
-    <div id="user-selection-div">
+    <div class="user-selection-div">
+        <label for="user-selection">User Selection: </label>
+        <select name="user-selection" id="user-selection">
+            <option>
+                Hoa
+            </option>
+
+        </select>
+
+        <button>Select</button>
     </div>
 
-
-    <!-- select user after create chat or looad message in that group
-
-    // when have all value open button for send message
-
-    // button
+    <br>
+    <br>
 
 
-    // all message here, recive message from websokcet -->
-    <textarea name="message-area" id="message-area" name="message-area" readonly
-              rows="4" cols="10" placeholder="Welcome to chat room">
-        </textarea>
+    <div class="chat-div">
 
+        <div class="textbox-div">
 
-    <form id="chat-message">
-        <label for="message">Messsage:</label>
-        <input type="text" id="message" name="message">
+            <label for="message-area">TextBox: </label>
+            <textarea name="message-area" id="message-area" name="message-area" readonly
+                      rows="4" cols="100" placeholder="Welcome to chat room">
+            </textarea>
+        </div>
 
         <br>
         <br>
 
-        <input type="submit" value="Send message">
-    </form>
+        <form id="chat-message">
+            <label for="message">Messsage:</label>
+            <input type="text" id="message" name="message">
+
+            <br>
+            <br>
+
+            <input type="submit" value="Send message" onclick="sendMessage()">
+        </form>
+    </div>
 
 </div>
 
@@ -44,8 +57,18 @@
         const tokenObj = JSON.parse(strToken)
 
         if (tokenObj == null) {
-            // window.location.replace("http://" + document.location.host + "/ui/login")
+            window.location.replace("http://" + document.location.host + "/ui/login")
         } else {
+
+            getAllUser((err, data) => {
+                if (err) {
+                    console.log("Can not retrieve data: " + err);
+                } else {
+                    console.log(data);
+                    fillUserSelection(data);
+                }
+            });
+
 
         }
     }
@@ -72,29 +95,37 @@
 
     }
 
-    function fillUserSelection() {
+    function fillUserSelection(users) {
         const userSelection = document.getElementById("user-selection-div");
 
         let strOptions;
-        for (const i = 0; i < resposne.length; i++) {
-            strOptions += "<option id="+ resposne[i].id +"> "+ resposne[i].displayName +" </option>"
+        for (const i = 0; i < users.length; i++) {
+            strOptions += "<option id="+ users[i].id +"> "+ users[i].displayName +" </option>"
         }
 
         userSelection.innerHTML = "<select>"+ strOptions + "</select>"
     }
 
-    function getAllUser() {
+    function getAllUser(callback) {
         const xhttpr = new XMLHttpRequest();
         xhttpr.open('GET', "http://" + document.location.host + "/api/users", true);
         xhttpr.setRequestHeader('Content-Type',  "application/json;charset=UTF-8");
+        setTokenHeader(xhttpr);
 
         xhttpr.onload = () => {
             if (xhttpr.status == 200) {
-                return JSON.parse(xhttpr.response);
+                console.log(xhttpr.response)
+                callback(null, JSON.parse(xhttpr.response));
             } else {
-                console.log("Error when call user api")
+                callback(xhttpr.status, null)
             }
         }
+
+        xhttpr.onerror = () => {
+            callback("Can not call", null)
+        }
+
+        xhttpr.send();
     }
 
     function getAllMessageByTargetId(targetId) {
@@ -122,16 +153,30 @@
         }
     }
 
+    function setTokenHeader(xhttpr) {
+        var strToken = localStorage.getItem("token")
+        const tokenObj = JSON.parse(strToken)
+        xhttpr.setRequestHeader('Authorization', 'Bearer ' + tokenObj.accessToken);
+    }
+
 </script>
 
-<style type="css" >
+<style type="text/css" >
     body {
         width: 100%;
         height: 100%;
     }
 
     .center {
+        margin: auto;
+        width: 50%;
+        border: 1px solid 29ffff;
+        padding: 5px;
+    }
 
+    .textbox-div {
+        display: flex;
+        gap: 10px;
     }
 </style>
 

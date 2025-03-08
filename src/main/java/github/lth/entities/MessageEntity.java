@@ -27,7 +27,7 @@ public class MessageEntity {
     private UUID sender;
 
     @Column(value = "room_id")
-    private UUID room_id;
+    private UUID roomId;
 
     @Column(value = "content")
     private String content;

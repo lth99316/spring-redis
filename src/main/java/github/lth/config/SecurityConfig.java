@@ -2,7 +2,9 @@ package github.lth.config;
 
 import github.lth.features.security.jwt.JwtFilter;
 import github.lth.features.security.jwt.JwtSupporter;
+import github.lth.features.security.matcher.SkipRequestMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -44,8 +46,19 @@ public class SecurityConfig {
     @Autowired
     private SecurityConfigProperties securityConfigProperties;
 
+    @Autowired
+    private SkipRequestMatcher skipRequestMatcher;
+
+    @Value("${app.security.enabled}")
+    private Boolean enabled;
+
     @Bean
     public SecurityWebFilterChain webFilterChain(ServerHttpSecurity http) {
+
+        if (!enabled) {
+            return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
+                    .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable).build();
+        }
 
         http.csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
@@ -64,7 +77,7 @@ public class SecurityConfig {
                                 }).then(exchange.getResponse().setComplete())
                         ));
 
-        http.addFilterAt(new JwtFilter(jwtSupporter, securityConfigProperties), SecurityWebFiltersOrder.HTTP_BASIC);
+        http.addFilterAt(new JwtFilter(jwtSupporter, skipRequestMatcher), SecurityWebFiltersOrder.HTTP_BASIC);
 
         return http.build();
     }

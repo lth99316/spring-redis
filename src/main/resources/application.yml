@@ -29,6 +29,7 @@ spring:
 
 app:
   security:
+    enabled: false
     token-configs:
       - type: ACCESS_TOKEN
         duration: P30d
@@ -36,7 +37,7 @@ app:
         duration: P90d
     skip-api:
       - /public/**
-      - /ui/login
+      - /ui/**
       - /api/login
     public-key: "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+aELE6InoIIRtqEuiDaFKfNpFYwwk0R+S1tmAt4wi0PNwHo2+kOsvh2xWVdZm0xqpQ6/8Qbeu1kV1qwhRzxdtw=="
     private-key: "MEECAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQcEJzAlAgEBBCBy63470Fb64RVuHZy1arFwmN+ARFkWW/A17NQWToHlKw=="

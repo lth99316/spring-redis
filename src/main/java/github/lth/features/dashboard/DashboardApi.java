@@ -9,7 +9,6 @@ import reactor.core.publisher.Mono;
 
 public interface DashboardApi {
 
-    @PreAuthorize("hasRole("+ UserRoleConstants.USER +")")
     @GetMapping(value = "/ui/home", produces = MediaType.TEXT_HTML_VALUE)
     Mono<Resource> dashboard();
 }
